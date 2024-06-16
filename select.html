@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Таблица с положениями</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #3f873f;
+            font-size: 30px;
+        }
+        form {
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form label {
+            display: block;
+            font-size: 16px;
+            margin: 10px 0 5px;
+        }
+        form input[type="text"], form input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        form input[type="submit"] {
+            cursor: pointer;
+            background-color: #5dae47;
+            color: #fff;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+        form input[type="submit"]:hover {
+            background-color: #489341;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table th, table td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        table th {
+            background-color: #37662a;
+            color: #fff;
+            font-weight: bold;
+        }
+        table tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Таблица с положениями</h1>
+
+        <!-- Форма для добавления записи -->
+        <form action="/add" method="post">
+            <label>Положение Земли</label>
+            <input type="text" name="earth_position" required />
+            <label>Положение Солнца</label>
+            <input type="text" name="sun_position" required />
+            <label>Положение Луны</label>
+            <input type="text" name="moon_position" required />
+            <input type="submit" value="Добавить" />
+        </form>
+
+        <!-- Форма для удаления записи -->
+        <form action="/delete" method="post">
+            <label>ID для удаления</label>
+            <input type="text" name="id" required />
+            <input type="submit" value="Удалить" />
+        </form>
+
+        <br />
+        <table>
+            @tr
+        </table>
+
+        <!-- Форма для объединения таблиц -->
+        <form action="/" method="GET">
+            <label for="table1">Таблица 1:</label>
+            <select id="table1" name="table1">
+                <option value="Positions">Positions</option>
+                <option value="Observations">Observations</option>
+                <!-- Добавьте другие таблицы, если необходимо -->
+            </select><br><br>
+            <label for="table2">Таблица 2:</label>
+            <select id="table2" name="table2">
+                <option value="Positions">Positions</option>
+                <option value="Observations">Observations</option>
+                <!-- Добавьте другие таблицы, если необходимо -->
+            </select><br><br>
+            <button type="submit">Объединить таблицы</button>
+        </form>
+        <br>
+        <table id="join-table">
+            @join
+        </table>
+        <p>Версия базы данных: 
+            <b>
+                @ver
+            </b>
+        </p>
+    </div>
+</body>
+</html>
