@@ -70,14 +70,11 @@ async function handleJoinRequest(req, res) {
     const { table1, table2 } = req.query;
 
     try {
-        // Формирование SQL-запроса для объединения таблиц
-        const sql = `
-            SELECT t1.*, t2.*
-            FROM ${mysql.escapeId(table1)} AS t1
-            JOIN ${mysql.escapeId(table2)} AS t2 ON t1.position_id = t2.position_id
-        `;
-
-        const [rows] = await pool.query(sql);
+        // Вызов хранимой процедуры для объединения таблиц
+        const [resultSets] = await pool.query(`CALL sp_join_tables(?, ?)`, [table1, table2]);
+        
+        
+        const rows = resultSets[0];
 
         let html = '<table>';
         html += '<tr>';
@@ -107,7 +104,7 @@ async function handleJoinRequest(req, res) {
         res.statusCode = 200;
         res.end(html);
     } catch (err) {
-        console.error('Ошибка выполнения запроса объединения:', err);
+        console.error('Ошибка выполнения процедуры объединения:', err);
         res.statusCode = 500;
         res.end('Ошибка сервера');
     }
@@ -193,12 +190,11 @@ async function ViewSelect(res) {
 
 async function ViewJoinTables(res, table1, table2) {
     try {
-        const sql = `
-            SELECT t1.*, t2.*
-            FROM ${mysql.escapeId(table1)} AS t1
-            JOIN ${mysql.escapeId(table2)} AS t2 ON t1.position_id = t2.position_id
-        `;
-        const [rows] = await pool.query(sql);
+        // Вызов хранимой процедуры для объединения таблиц
+        const [resultSets] = await pool.query(`CALL sp_join_tables(?, ?)`, [table1, table2]);
+        
+       
+        const rows = resultSets[0];
 
         if (rows.length > 0) {
             const columns = Object.keys(rows[0]);
